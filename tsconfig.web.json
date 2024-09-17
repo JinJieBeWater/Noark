@@ -10,10 +10,11 @@
     "composite": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    // Shadcn的CLI需要检测该文件以确认组件安装位置 因此只能从子配置从提取出来
     "paths": {
       "@renderer/*": [
         "src/renderer/src/*"
-      ]
+      ],
     }
   }
 }

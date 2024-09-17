@@ -1,4 +1,22 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.node.json" }, { "path": "./tsconfig.web.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    },
+    {
+      "path": "./tsconfig.web.json"
+    }
+  ],
+  "compilerOptions": {
+    "composite": true,
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    // Shadcn的CLI需要检测该别名以确认组件正确安装位置 因此只能从子配置从提取出来
+    "paths": {
+      "@renderer/*": [
+        "src/renderer/src/*"
+      ],
+    }
+  }
 }

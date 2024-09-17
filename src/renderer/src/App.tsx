@@ -1,12 +1,23 @@
-import Versions from './components/Versions'
-import electronLogo from './assets/electron.svg'
-
+// import Versions from './components/Versions'
+// import electronLogo from './assets/electron.svg'
+import * as React from 'react'
+import { Button } from './components/ui/button'
+import { Calendar } from './components/ui/calendar'
 function App(): JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
+  const [date, setDate] = React.useState<Date | undefined>(new Date())
+
   return (
     <>
-      <img alt="logo" className="logo" src={electronLogo} />
+      <Button onClick={ipcHandle}>Click me</Button>
+      <Calendar
+        mode="single"
+        selected={date}
+        onSelect={setDate}
+        className="border rounded-md shadow"
+      />
+      {/* <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
         Build an Electron app with <span className="react">React</span>
@@ -27,7 +38,7 @@ function App(): JSX.Element {
           </a>
         </div>
       </div>
-      <Versions></Versions>
+      <Versions></Versions> */}
     </>
   )
 }
