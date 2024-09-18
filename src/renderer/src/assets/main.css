@@ -16,3 +16,8 @@ code {
     monospace;
   font-size: 85%;
 }
+
+.titlebar {
+  -webkit-app-region: drag;
+  -webkit-user-select: none;
+}

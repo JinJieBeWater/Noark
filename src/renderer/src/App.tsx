@@ -3,6 +3,7 @@
 import * as React from 'react'
 import { Button } from './components/ui/button'
 import { Calendar } from './components/ui/calendar'
+import HomeLayout from './layout/home'
 function App(): JSX.Element {
   const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
 
@@ -10,13 +11,16 @@ function App(): JSX.Element {
 
   return (
     <>
-      <Button onClick={ipcHandle}>Click me</Button>
-      <Calendar
-        mode="single"
-        selected={date}
-        onSelect={setDate}
-        className="border rounded-md shadow"
-      />
+      <HomeLayout>
+        <Button onClick={ipcHandle}>Click me</Button>
+        <Calendar
+          mode="single"
+          selected={date}
+          onSelect={setDate}
+          className="border rounded-md shadow"
+        />
+      </HomeLayout>
+
       {/* <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>
       <div className="text">
