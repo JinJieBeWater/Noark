@@ -1,25 +1,20 @@
 // import Versions from './components/Versions'
 // import electronLogo from './assets/electron.svg'
-import * as React from 'react'
-import { Button } from './components/ui/button'
-import { Calendar } from './components/ui/calendar'
 import HomeLayout from './layout/home'
+import { cn } from './lib/utils'
+import { Separator } from './components/ui/separator'
+import TitleBar from './components/title-bar'
+import { TooltipProvider } from './components/ui/tooltip'
 function App(): JSX.Element {
-  const ipcHandle = (): void => window.electron.ipcRenderer.send('ping')
-
-  const [date, setDate] = React.useState<Date | undefined>(new Date())
-
   return (
     <>
-      <HomeLayout>
-        <Button onClick={ipcHandle}>Click me</Button>
-        <Calendar
-          mode="single"
-          selected={date}
-          onSelect={setDate}
-          className="border rounded-md shadow"
-        />
-      </HomeLayout>
+      <TooltipProvider>
+        <div className={cn('flex flex-col h-screen')}>
+          <TitleBar />
+          <Separator />
+          <HomeLayout></HomeLayout>
+        </div>
+      </TooltipProvider>
 
       {/* <img alt="logo" className="logo" src={electronLogo} />
       <div className="creator">Powered by electron-vite</div>

@@ -15,8 +15,8 @@ function createWindow(): void {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false
     },
-    titleBarStyle: 'hidden',
-    titleBarOverlay: true
+    useContentSize: true,
+    frame: false
   })
 
   mainWindow.on('ready-to-show', () => {
@@ -35,6 +35,24 @@ function createWindow(): void {
   } else {
     mainWindow.loadFile(join(__dirname, '../renderer/index.html'))
   }
+
+  //登录窗口最小化
+  ipcMain.on('window-min', function () {
+    console.log('minWindow')
+    mainWindow.minimize()
+  })
+  //登录窗口最大化
+  ipcMain.on('window-max', function () {
+    if (mainWindow.isMaximized()) {
+      mainWindow.restore()
+    } else {
+      mainWindow.maximize()
+    }
+  })
+  //登录窗口关闭
+  ipcMain.on('window-close', function () {
+    mainWindow.close()
+  })
 }
 
 // This method will be called when Electron has finished
