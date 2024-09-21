@@ -3,15 +3,19 @@ import { CodeIcon } from '@radix-ui/react-icons'
 import { cn } from '@renderer/lib/utils'
 import { buttonVariants } from '@renderer/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@renderer/components/ui/tooltip'
+import { Link, Path } from 'react-router-dom'
+
+export type LinkProp = {
+  title: string
+  label?: string
+  icon: typeof CodeIcon
+  variant?: 'default' | 'ghost'
+  href?: string | Partial<Path>
+}
 
 interface NavProps {
   isCollapsed: boolean
-  links: {
-    title: string
-    label?: string
-    icon: typeof CodeIcon
-    variant: 'default' | 'ghost'
-  }[]
+  links: LinkProp[]
 }
 
 export function Nav({ links, isCollapsed }: NavProps) {
@@ -25,7 +29,8 @@ export function Nav({ links, isCollapsed }: NavProps) {
           isCollapsed ? (
             <Tooltip key={index} delayDuration={0}>
               <TooltipTrigger asChild>
-                <div
+                <Link
+                  to={link.href || '#'}
                   className={cn(
                     buttonVariants({ variant: link.variant, size: 'icon' }),
                     'h-9 w-9',
@@ -35,7 +40,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 >
                   <link.icon className="w-4 h-4" />
                   <span className="sr-only">{link.title}</span>
-                </div>
+                </Link>
               </TooltipTrigger>
               <TooltipContent side="right" className="flex items-center gap-4">
                 {link.title}
@@ -43,7 +48,8 @@ export function Nav({ links, isCollapsed }: NavProps) {
               </TooltipContent>
             </Tooltip>
           ) : (
-            <div
+            <Link
+              to={link.href || '#'}
               key={index}
               className={cn(
                 buttonVariants({ variant: link.variant, size: 'sm' }),
@@ -64,7 +70,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                   {link.label}
                 </span>
               )}
-            </div>
+            </Link>
           )
         )}
       </nav>

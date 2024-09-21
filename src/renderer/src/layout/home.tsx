@@ -1,6 +1,6 @@
-import { DrawingPinIcon, FileTextIcon, HomeIcon } from '@radix-ui/react-icons'
+import { CodeIcon, DrawingPinIcon, FileTextIcon, HomeIcon } from '@radix-ui/react-icons'
 import Account from '@renderer/components/account'
-import { Nav } from '@renderer/components/nav'
+import { LinkProp, Nav } from '@renderer/components/nav'
 import {
   ResizableHandle,
   ResizablePanel,
@@ -9,18 +9,57 @@ import {
 import { Separator } from '@renderer/components/ui/separator'
 import { cn } from '@renderer/lib/utils'
 import { useState } from 'react'
+import { Outlet, useLoaderData } from 'react-router-dom'
+
+type DocumentData = {
+  id: string
+  title: string
+  icon: typeof CodeIcon
+}
+
+export const homeLayoutloader = async (): Promise<{ documents: DocumentData[] }> => {
+  const documents = [
+    {
+      id: '1',
+      title: 'drafts',
+      icon: FileTextIcon
+    },
+    {
+      id: '2',
+      title: 'drafts',
+      icon: FileTextIcon
+    },
+    {
+      id: '3',
+      title: 'drafts',
+      icon: FileTextIcon
+    }
+  ]
+  return { documents }
+}
 
 type HomeProps = {
   defaultLayout?: number[]
   defaultCollapsed?: boolean
   navCollapsedSize?: number
 } & React.PropsWithChildren
+
 export default function HomeLayout({
   defaultLayout = [20, 32, 48],
   defaultCollapsed = false,
   navCollapsedSize = 4
 }: HomeProps): React.JSX.Element {
   const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed)
+
+  const { documents } = useLoaderData() as { documents: DocumentData[] }
+
+  const links: LinkProp[] = documents.map((document) => ({
+    title: document.title,
+    label: '',
+    icon: document.icon,
+    variant: 'ghost',
+    href: `/document/${document.id}`
+  }))
 
   return (
     <>
@@ -56,39 +95,24 @@ export default function HomeLayout({
                   title: '主页',
                   label: '',
                   icon: HomeIcon,
-                  variant: 'default'
+                  variant: 'default',
+                  href: '/'
                 },
                 {
                   title: '置顶',
                   label: '',
                   icon: DrawingPinIcon,
-                  variant: 'ghost'
+                  variant: 'ghost',
+                  href: '/top'
                 }
               ]}
             ></Nav>
             <Separator className={cn('mt-6')} />
-            <Nav
-              isCollapsed={isCollapsed}
-              links={[
-                {
-                  title: 'drafts',
-                  label: '',
-                  icon: FileTextIcon,
-                  variant: 'ghost'
-                },
-                {
-                  title: 'drafts',
-                  label: '',
-                  icon: FileTextIcon,
-                  variant: 'ghost'
-                }
-              ]}
-            ></Nav>
+            <Nav isCollapsed={isCollapsed} links={links}></Nav>
           </ResizablePanel>
           <ResizableHandle withHandle />
           <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
-            {/* center */}
-            center
+            <Outlet />
           </ResizablePanel>
           {/* <ResizableHandle withHandle />
           <ResizablePanel defaultSize={defaultLayout[2]} minSize={30}>
