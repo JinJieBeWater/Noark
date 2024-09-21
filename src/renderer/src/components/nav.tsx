@@ -3,13 +3,12 @@ import { CodeIcon } from '@radix-ui/react-icons'
 import { cn } from '@renderer/lib/utils'
 import { buttonVariants } from '@renderer/components/ui/button'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@renderer/components/ui/tooltip'
-import { Link, Path } from 'react-router-dom'
+import { Link, Path, useLocation } from 'react-router-dom'
 
 export type LinkProp = {
   title: string
   label?: string
   icon: typeof CodeIcon
-  variant?: 'default' | 'ghost'
   href?: string | Partial<Path>
 }
 
@@ -19,6 +18,7 @@ interface NavProps {
 }
 
 export function Nav({ links, isCollapsed }: NavProps) {
+  const { pathname } = useLocation()
   return (
     <div
       data-collapsed={isCollapsed}
@@ -32,9 +32,12 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 <Link
                   to={link.href || '#'}
                   className={cn(
-                    buttonVariants({ variant: link.variant, size: 'icon' }),
+                    buttonVariants({
+                      variant: pathname === link.href ? 'default' : 'ghost',
+                      size: 'icon'
+                    }),
                     'h-9 w-9',
-                    link.variant === 'default' &&
+                    pathname === link.href &&
                       'dark:bg-muted dark:text-muted-foreground dark:hover:bg-muted dark:hover:text-white'
                   )}
                 >
@@ -52,8 +55,11 @@ export function Nav({ links, isCollapsed }: NavProps) {
               to={link.href || '#'}
               key={index}
               className={cn(
-                buttonVariants({ variant: link.variant, size: 'sm' }),
-                link.variant === 'default' &&
+                buttonVariants({
+                  variant: pathname === link.href ? 'default' : 'ghost',
+                  size: 'sm'
+                }),
+                pathname === link.href &&
                   'dark:bg-muted dark:text-white dark:hover:bg-muted dark:hover:text-white',
                 'justify-start'
               )}
@@ -64,7 +70,7 @@ export function Nav({ links, isCollapsed }: NavProps) {
                 <span
                   className={cn(
                     'ml-auto',
-                    link.variant === 'default' && 'text-background dark:text-white'
+                    pathname === link.href && 'text-background dark:text-white'
                   )}
                 >
                   {link.label}

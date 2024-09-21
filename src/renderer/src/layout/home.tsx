@@ -53,11 +53,26 @@ export default function HomeLayout({
 
   const { documents } = useLoaderData() as { documents: DocumentData[] }
 
+  // 导航栏
+  const navs: LinkProp[] = [
+    {
+      title: '主页',
+      label: '',
+      icon: HomeIcon,
+      href: '/'
+    },
+    {
+      title: '置顶',
+      label: '',
+      icon: DrawingPinIcon,
+      href: '/top'
+    }
+  ]
+
   const links: LinkProp[] = documents.map((document) => ({
     title: document.title,
     label: '',
     icon: document.icon,
-    variant: 'ghost',
     href: `/document/${document.id}`
   }))
 
@@ -88,30 +103,12 @@ export default function HomeLayout({
             className={cn(isCollapsed && 'min-w-[50px] transition-all duration-300 ease-in-out')}
           >
             <Account isCollapsed={isCollapsed} className="mx-2 mt-3 mb-2" />
-            <Nav
-              isCollapsed={isCollapsed}
-              links={[
-                {
-                  title: '主页',
-                  label: '',
-                  icon: HomeIcon,
-                  variant: 'default',
-                  href: '/'
-                },
-                {
-                  title: '置顶',
-                  label: '',
-                  icon: DrawingPinIcon,
-                  variant: 'ghost',
-                  href: '/top'
-                }
-              ]}
-            ></Nav>
+            <Nav isCollapsed={isCollapsed} links={navs}></Nav>
             <Separator className={cn('mt-6')} />
             <Nav isCollapsed={isCollapsed} links={links}></Nav>
           </ResizablePanel>
           <ResizableHandle withHandle />
-          <ResizablePanel defaultSize={defaultLayout[1]} minSize={30}>
+          <ResizablePanel>
             <Outlet />
           </ResizablePanel>
           {/* <ResizableHandle withHandle />
